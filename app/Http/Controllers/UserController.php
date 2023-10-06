@@ -41,9 +41,13 @@ class UserController extends Controller
 
         if (Auth::attempt($credentials)) {
             $user = $request->user();
+            $user->rol;
             $token = $user->createToken('app-token')->plainTextToken;
 
-            return response()->json(['token' => $token], 200);
+            return response()->json([
+                'token' => $token,
+                "user" => $user
+            ], 200);
         }
 
         return response()->json(['message' => 'Credenciales inválidas'], 401);

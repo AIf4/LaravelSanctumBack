@@ -13,7 +13,6 @@ class ProyectController extends Controller
 
     public function createProyect(Request $request)
     {
-        // Valida los datos del formulario
         $validatedData = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string|max:255',
@@ -21,7 +20,6 @@ class ProyectController extends Controller
             'end_date' => 'required|string'
         ]);
 
-        // Crea un nuevo usuario
         $proyect = new Proyect();
         $proyect->title = $validatedData['title'];
         $proyect->description = $validatedData['description'];
@@ -30,21 +28,26 @@ class ProyectController extends Controller
         $proyect->user_id = Auth::id();
         $proyect->save();
 
-        // Retorna una respuesta JSON
         return response()->json(['message' => 'proyecto creado con éxito'], 201);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function getAllProyects()
     {
-        return response()->json(['proyects' => Proyect::with('user')->get()], 200);
+        return response()->json(['proyects' => Proyect::with(['user', 'task.user'])->get()], 200);
     }
 
-    /**
-     * Display the specified resource.
-     */
+    public function getAllProyectsByUserId($user_id)
+    {
+        return response()->json(['proyects' => Proyect::with([
+            'user',
+            'task' => function ($query) use ($user_id) {
+                $query->whereHas('user', function ($query) use ($user_id) {
+                    $query->where('users.id', $user_id);
+                });
+            }
+        ])->get()], 200);
+    }
+
     public function getProyectById($id)
     {
         $proyect = Proyect::with('user')->find($id);

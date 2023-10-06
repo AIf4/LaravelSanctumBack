@@ -8,7 +8,7 @@ use Laravel\Sanctum\HasApiTokens;
 
 class Proyect extends Model
 {
-    use HasApiTokens,HasFactory;
+    use HasApiTokens, HasFactory;
 
     protected $fillable = [
         'title',
@@ -18,7 +18,13 @@ class Proyect extends Model
         'user_id'
     ];
 
-    public function user() {
+    public function user()
+    {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function task()
+    {
+        return $this->hasMany(Task::class);
     }
 }

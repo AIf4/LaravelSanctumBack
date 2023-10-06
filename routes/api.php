@@ -34,6 +34,7 @@ Route::middleware('auth:sanctum')->group( function(){
     Route::middleware('rol:admin')->post('/proyect', [ProyectController::class, 'createProyect']);
     Route::get('/proyects', [ProyectController::class, 'getAllProyects']);
     Route::get('/proyect/{id}', [ProyectController::class, 'getProyectById']);
+    Route::get('/proyect/{user_id}/byuser', [ProyectController::class, 'getAllProyectsByUserId']);
     Route::get('/proyect/{params}/params', [ProyectController::class, 'getByParam']);
     Route::middleware('rol:admin')->put('/proyect/{id}', [ProyectController::class, 'updateProyect']);
     Route::middleware('rol:admin')->delete('/proyect/{id}', [ProyectController::class, 'deleteProyect']);
