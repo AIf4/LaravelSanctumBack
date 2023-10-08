@@ -33,7 +33,7 @@ class ProyectController extends Controller
 
     public function getAllProyects()
     {
-        return response()->json(['proyects' => Proyect::with(['user', 'task.user'])->get()], 200);
+        return response()->json(['proyects' => Proyect::with(['user', 'task.user'])->orderBy('created_at', 'desc')->get()], 200);
     }
 
     public function getAllProyectsByUserId($user_id)
