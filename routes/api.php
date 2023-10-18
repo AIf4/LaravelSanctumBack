@@ -43,6 +43,7 @@ Route::middleware('auth:sanctum')->group( function(){
     Route::middleware('rol:admin')->post('/task', [TaskController::class, 'createTask']);
     Route::get('/tasks', [TaskController::class, 'getAllTask']);
     Route::get('/task/{id}', [TaskController::class, 'getTaskById']);
+    Route::get('/task/{proyect_id}/byproyect', [TaskController::class, 'getTaskByProyectId']);
     Route::middleware('rol:admin')->put('/task/{id}', [TaskController::class, 'updateTask']);
     Route::middleware('rol:admin')->delete('/task/{id}', [TaskController::class, 'deleteTask']);
     Route::post('/task/{task}/assign', [TaskController::class, 'assignUser']);

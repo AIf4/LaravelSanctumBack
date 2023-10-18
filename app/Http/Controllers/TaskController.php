@@ -45,6 +45,16 @@ class TaskController extends Controller
         return response()->json(['task' => Task::find($id)->with(['user', 'proyect'])->get()], 200);
     }
 
+    public function getTaskByProyectId($proyect_id)
+    {
+        $task = Task::with(['user', 'proyect'])->where('proyect_id', $proyect_id);
+
+        if (!$task->count()) {
+            return response()->json(['message' => 'El proyecto no tiene tareas asignadas'], 404);
+        }
+        return response()->json(['tasks' =>  $task->get()], 200);
+    }
+
     public function updateTask($id, Request $request){
         $task = Task::with('user')->find($id);
         if (!$task) {
