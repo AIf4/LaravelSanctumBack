@@ -28,7 +28,10 @@ class TaskController extends Controller
         $task->save();
 
         // Retorna una respuesta JSON
-        return response()->json(['message' => 'Tarea creada con éxito'], 201);
+        return response()->json([
+            'message' => 'Tarea creada con éxito',
+            'task' => $task
+        ], 201);
     }
 
     public function getAllTask()
@@ -90,17 +93,36 @@ class TaskController extends Controller
 
 
 
-    public function assignUser(Request $request, Task $task)
-    {
+    public function assignUser(Request $request, Task $task){
         $user = User::find($request->input('user_id'));
         $task->user()->attach($user->id);
         return response()->json(['message' => 'Usuario asignado con éxito'], 201);
     }
 
-    public function unassignUser(Request $request, Task $task)
-    {
+    public function unassignUser(Request $request, Task $task){
         $user = User::find($request->input('user_id'));
         $task->user()->detach($user->id);
+        return response()->json(['message' => 'Tarea desasignada con éxito'], 201);
+    }
+
+    public function assignUsers(Request $request, Task $task){
+
+        foreach ($request->input('users') as $key => $user) {
+            $user = User::find($user['id']);
+            if($user){
+                $task->user()->attach($user->id);
+            }
+        }
+        return response()->json(['message' => 'Usuario asignado con éxito'], 201);
+    }
+
+    public function unassignUsers(Request $request, Task $task){
+        foreach ($request->input('users') as $key => $user) {
+            $user = User::find($user['id']);
+            if($user){
+                $task->user()->detach($user->id);
+            }
+        }
         return response()->json(['message' => 'Tarea desasignada con éxito'], 201);
     }
 }

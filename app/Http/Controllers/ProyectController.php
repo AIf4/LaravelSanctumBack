@@ -14,8 +14,8 @@ class ProyectController extends Controller
     public function createProyect(Request $request)
     {
         $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'required|string|max:255',
+            'title' => 'required|string|max:50',
+            'description' => 'required|string|max:200',
             'start_date' => 'required|string',
             'end_date' => 'required|string'
         ]);
